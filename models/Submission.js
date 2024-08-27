@@ -4,19 +4,28 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const submissionSchema = new Schema({
-  rightAnswer: {
+  examName: {
     type: String,
     required: true,
   },
-  studentAnswer: {
+  studentName: {
     type: String,
     required: true,
   },
-  result: {
-    type: String,
-    default: '',
+  questions: [
+    {
+      rightAnswer: String,
+      studentAnswer: String,
+      result: String,
+      mark: Number,
+      marks: Number,
+    },
+  ],
+  totalMark: {
+    type: Number,
+    default: 0,
   },
-  mark: {
+  earnedMark: {
     type: Number,
     default: 0,
   },

@@ -7,6 +7,7 @@ const cors = require('cors');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const submissionRoutes = require('./routes/submissions');
+const saveExamRoute = require('./routes/saveExam');
 
 const app = express();
 const port = process.env.PORT || 5000;
@@ -26,6 +27,7 @@ mongoose.set('debug', true);
 
 // Use Routes
 app.use('/api', submissionRoutes);
+app.use('/api', saveExamRoute);
 
 // Start server
 app.listen(port, () => {

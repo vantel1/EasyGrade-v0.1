@@ -7,6 +7,8 @@ function App() {
   const [results, setResults] = useState([]);
   const [examName, setExamName] = useState('');
   const [studentName, setStudentName] = useState('');
+  const [totalMarks, setTotalMarks] = useState(0);
+  const [earnedMarks, setEarnedMarks] = useState(0);
 
   const handleNumQuestionsChange = (e) => {
     const count = parseInt(e.target.value, 10);
@@ -25,6 +27,8 @@ function App() {
 
   const handleSubmit = async () => {
     const newResults = [];
+    let total = 0;
+    let earned = 0;
     for (let i = 0; i < numQuestions; i++) {
       try {
         const response = await axios.post('/api/submit', {
@@ -32,13 +36,42 @@ function App() {
           studentAnswer: questions[i].studentAnswer,
           marks: questions[i].marks,
         });
+        
         newResults.push({ result: response.data.result, mark: response.data.mark });
+
+        // Accumulate total and earned marks
+        total += parseFloat(questions[i].marks);
+        earned += response.data.mark;
       } catch (error) {
         console.error('Error submitting answers:', error);
         newResults.push({ result: 'Error', mark: 0 });
       }
     }
+    
     setResults(newResults);
+    setTotalMarks(total);
+    setEarnedMarks(earned);
+  };
+
+  const handleSaveExam = async () => {
+    try {
+      const response = await axios.post('/api/save-exam', {
+        examName,
+        studentName,
+        questions: questions.map((question, index) => ({
+          rightAnswer: question.rightAnswer,
+          studentAnswer: question.studentAnswer,
+          result: results[index]?.result || '',
+          mark: results[index]?.mark || 0,
+          marks: question.marks,
+        })), // Assuming results contain all the questions with rightAnswer, studentAnswer, result, mark and marks
+        totalMark: totalMarks,
+        earnedMark: earnedMarks,        
+      });
+      console.log('Exam saved successfully:', response.data);
+    } catch (error) {
+      console.error('Error saving exam:', error);
+    }
   };
 
   return (
@@ -152,12 +185,7 @@ function App() {
 
           </div>
         ))}
-        <button
-          onClick={handleSubmit}
-          className="bg-violet-700 text-white p-2 rounded"
-        >
-          Submit
-        </button>
+
         {results.map((result, index) => (
           <div key={index} className="mt-4 p-2 border-t border-gray-300">
             <h3 className="font-semibold">Result for Question {index + 1}:</h3>
@@ -165,6 +193,28 @@ function App() {
             <p>Mark: {result.mark}</p>
           </div>
         ))}
+
+        <div className="mt-4">
+          <h3>Total Marks: {totalMarks}</h3>
+          <h3>Marks Earned: {earnedMarks}</h3>
+        </div>
+        <div>
+          <button
+            onClick={handleSubmit}
+            className="bg-violet-700 text-white p-2 mr-4 mt-4 rounded"
+          >
+            Submit
+          </button>
+
+          <button
+            onClick={handleSaveExam}
+            className="bg-violet-700 text-white p-2 rounded"
+          >
+            Save Exam Results
+          </button>
+        </div>
+        
+        
       </div>
     </div>
   );
