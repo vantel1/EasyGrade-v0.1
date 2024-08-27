@@ -20,7 +20,7 @@ const submissionSchema = new Schema({
     type: Number,
     default: 0,
   },
-});
+}, { collection: 'Submission' });
 
 const Submission = mongoose.model('Submission', submissionSchema);
 
