@@ -12,6 +12,10 @@ const submissionSchema = new Schema({
     type: String,
     required: true,
   },
+  numQuestions: {
+    type: Number,
+    required: true,
+  },
   questions: [
     {
       rightAnswer: String,
@@ -19,6 +23,12 @@ const submissionSchema = new Schema({
       result: String,
       mark: Number,
       marks: Number,
+    },
+  ],
+  results: [
+    {
+      result: String,
+      mark: Number,
     },
   ],
   totalMark: {

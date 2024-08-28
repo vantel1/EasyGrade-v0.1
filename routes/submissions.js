@@ -27,16 +27,6 @@ router.post('/submit', async (req, res) => {
     console.log(result);
     
     const mark = parseFloat(score);
-    
-
-    // Save submission to MongoDB
-    try {
-      const newSubmission = new Submission({ rightAnswer, studentAnswer, result, mark });
-      await newSubmission.save();
-      console.log('Submission saved successfully');
-    } catch (error) {
-      console.error('Error saving submission:', error);
-    }
 
     res.status(201).json({ result, mark });
   } catch (error) {

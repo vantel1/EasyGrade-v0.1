@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import StudentHistoryPopup from './components/StudentHistoryPopup';
 
 function App() {
   const [numQuestions, setNumQuestions] = useState(1);
@@ -9,6 +10,19 @@ function App() {
   const [studentName, setStudentName] = useState('');
   const [totalMarks, setTotalMarks] = useState(0);
   const [earnedMarks, setEarnedMarks] = useState(0);
+
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+  
+  const handleSearch = (submissionData) => {
+    console.log(submissionData);
+    setExamName(submissionData.examName);
+    setStudentName(submissionData.studentName);
+    setNumQuestions(submissionData.questions.length);
+    setQuestions(submissionData.questions);
+    // setResults(submissionData.results);
+    setTotalMarks(submissionData.totalMark);
+    setEarnedMarks(submissionData.earnedMark);
+  };
 
   const handleNumQuestionsChange = (e) => {
     const count = parseInt(e.target.value, 10);
@@ -58,13 +72,16 @@ function App() {
       const response = await axios.post('/api/save-exam', {
         examName,
         studentName,
-        questions: questions.map((question, index) => ({
+        numQuestions,
+        questions: questions.map((question) => ({
           rightAnswer: question.rightAnswer,
-          studentAnswer: question.studentAnswer,
-          result: results[index]?.result || '',
-          mark: results[index]?.mark || 0,
+          studentAnswer: question.studentAnswer,          
           marks: question.marks,
-        })), // Assuming results contain all the questions with rightAnswer, studentAnswer, result, mark and marks
+        })), // Assuming results contain all the questions with rightAnswer, studentAnswer, and marks
+        results: results.map((result) => ({
+          result: result.result,
+          mark: result.mark,
+        })),
         totalMark: totalMarks,
         earnedMark: earnedMarks,        
       });
@@ -80,12 +97,19 @@ function App() {
         <div className="max-w-7xl mx-auto flex justify-between items-center">
           <h1 className="text-2xl font-bold ml-4">EasyGrade</h1>
           <div>
-            <a href="#student-history" className="mr-4">Student History</a>
+            <a href="#student-history" onClick={() => setIsPopupOpen(true)} className="mr-4">Student History</a>
             <a href="#question-templates" className="mr-4">Question Templates</a>
             <a href="#about" className="mr-4">About</a>
           </div>
         </div>
       </nav>
+
+      <StudentHistoryPopup
+        isOpen={isPopupOpen}
+        onClose={() => setIsPopupOpen(false)}
+        onSearch={handleSearch}
+      />
+
       <div className="mt-16 px-16">
 
         <div className="flex justify-between items-center mb-8 pt-4">

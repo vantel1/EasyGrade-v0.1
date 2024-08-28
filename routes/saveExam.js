@@ -5,13 +5,15 @@ const router = express.Router();
 const Submission = require('../models/Submission');
 
 router.post('/save-exam', async (req, res) => {
-  const { examName, studentName, questions, totalMark, earnedMark } = req.body;
+  const { examName, studentName, numQuestions, questions, results, totalMark, earnedMark } = req.body;
 
   try {
     const newSubmission = new Submission({
       examName,
       studentName,
-      questions, // Assuming questions contain { rightAnswer, studentAnswer, result, mark, marks }
+      numQuestions,
+      questions, // Assuming questions contain { rightAnswer, studentAnswer, marks }
+      results, // Assuming results contain [ {result, mark} ]
       totalMark,
       earnedMark,
     });
