@@ -10,6 +10,7 @@ const submissionRoutes = require('./routes/submissions');
 const saveExamRoute = require('./routes/saveExam');
 const studentHistoryRoute = require('./routes/studentHistory');
 const saveQuestionRoute = require('./routes/saveQuestion');
+const questionTemplatesRoute = require('./routes/questionTemplates');
 
 const app = express();
 const port = process.env.PORT || 5000;
@@ -32,6 +33,7 @@ app.use('/api', submissionRoutes);
 app.use('/api', saveExamRoute);
 app.use('/api', studentHistoryRoute);
 app.use('/api', saveQuestionRoute);
+app.use('/api', questionTemplatesRoute);
 
 // Start server
 app.listen(port, () => {

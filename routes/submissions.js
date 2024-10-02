@@ -17,13 +17,11 @@ router.post('/submit', async (req, res) => {
     const match1 = aiResponse.match(regex1); // Extract the score from the AI's response
     const score = match1[0].split('/')[0].split(' ')[1];
 
-    console.log(score);
 
     const regex2 = new RegExp('Feedback:\\s([\\s\\S]*)', 'i');
     const match2 = aiResponse.match(regex2);
     const result = match2[1].trim();
 
-    console.log(result);
     
     const mark = parseFloat(score);
 

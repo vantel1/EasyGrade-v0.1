@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import StudentHistoryPopup from './components/StudentHistoryPopup';
+import QuestionTemplatePopup from './components/QuestionTemplatePopup';
 
 function App() {
   const [numQuestions, setNumQuestions] = useState(1);
@@ -12,14 +13,21 @@ function App() {
   const [earnedMarks, setEarnedMarks] = useState(0);
 
   const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [isQuestionPopupOpen, setIsQuestionPopupOpen] = useState(false);
+
+  const handleQuestionSearch = (questionData) => {
+    setExamName(questionData.examName);
+    setNumQuestions(questionData.numQuestions);
+    setQuestions(questionData.questions);
+    setTotalMarks(questionData.totalMark);
+  };
   
   const handleSearch = (submissionData) => {
-    console.log(submissionData);
     setExamName(submissionData.examName);
     setStudentName(submissionData.studentName);
-    setNumQuestions(submissionData.questions.length);
+    setNumQuestions(submissionData.numQuestions);
     setQuestions(submissionData.questions);
-    // setResults(submissionData.results);
+    setResults(submissionData.results);
     setTotalMarks(submissionData.totalMark);
     setEarnedMarks(submissionData.earnedMark);
   };
@@ -115,7 +123,7 @@ function App() {
           <h1 className="text-2xl font-bold ml-4">EasyGrade</h1>
           <div>
             <a href="#student-history" onClick={() => setIsPopupOpen(true)} className="mr-4">Student History</a>
-            <a href="#question-templates" className="mr-4">Question Templates</a>
+            <a href="#question-templates" onClick={() => setIsQuestionPopupOpen(true)} className="mr-4">Question Templates</a>
             <a href="#about" className="mr-4">About</a>
           </div>
         </div>
@@ -125,6 +133,12 @@ function App() {
         isOpen={isPopupOpen}
         onClose={() => setIsPopupOpen(false)}
         onSearch={handleSearch}
+      />
+
+      <QuestionTemplatePopup
+        isOpen={isQuestionPopupOpen}
+        onClose={() => setIsQuestionPopupOpen(false)}
+        onSearch={handleQuestionSearch}
       />
 
       <div className="mt-16 px-16">
