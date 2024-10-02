@@ -67,6 +67,23 @@ function App() {
     setEarnedMarks(earned);
   };
 
+  const handleSaveQuestion = async () => {
+    try {
+      const response = await axios.post('/api/save-question', {
+        examName,
+        numQuestions,
+        questions: questions.map((question) => ({
+          rightAnswer: question.rightAnswer,
+          marks: question.marks,
+        })),
+        totalMark: totalMarks,
+      });
+      console.log('Question saved successfully:', response.data);
+    } catch (error) {
+      console.error('Error saving Question:', error);
+    }
+  };
+
   const handleSaveExam = async () => {
     try {
       const response = await axios.post('/api/save-exam', {
@@ -232,9 +249,16 @@ function App() {
 
           <button
             onClick={handleSaveExam}
-            className="bg-violet-700 text-white p-2 rounded"
+            className="bg-violet-700 text-white p-2 mr-4 mt-4 rounded"
           >
             Save Exam Results
+          </button>
+
+          <button
+            onClick={handleSaveQuestion}
+            className="bg-violet-700 text-white p-2 rounded"
+          >
+            Save Question
           </button>
         </div>
         

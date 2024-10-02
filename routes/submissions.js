@@ -2,7 +2,6 @@
 
 const express = require('express');
 const router = express.Router();
-const Submission = require('../models/Submission');
 const { generateGrade } = require('../services/openaiService');
 
 // Route to submit answers and compute results using OpenAI API

@@ -9,6 +9,7 @@ const bodyParser = require('body-parser');
 const submissionRoutes = require('./routes/submissions');
 const saveExamRoute = require('./routes/saveExam');
 const studentHistoryRoute = require('./routes/studentHistory');
+const saveQuestionRoute = require('./routes/saveQuestion');
 
 const app = express();
 const port = process.env.PORT || 5000;
@@ -30,6 +31,7 @@ mongoose.set('debug', true);
 app.use('/api', submissionRoutes);
 app.use('/api', saveExamRoute);
 app.use('/api', studentHistoryRoute);
+app.use('/api', saveQuestionRoute);
 
 // Start server
 app.listen(port, () => {

@@ -20,8 +20,6 @@ const submissionSchema = new Schema({
     {
       rightAnswer: String,
       studentAnswer: String,
-      result: String,
-      mark: Number,
       marks: Number,
     },
   ],
