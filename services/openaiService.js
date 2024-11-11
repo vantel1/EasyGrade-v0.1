@@ -4,7 +4,7 @@ const OpenAI = require('openai');
 const generateGrade = async (rightAnswer, studentAnswer, marks) => {
   
   const openai = new OpenAI({
-    apiKey: process.env.OPENAI_API_KEY // This is also the default, can be omitted
+    apiKey: process.env.OPENAI_API_KEY
   });
 
   try {

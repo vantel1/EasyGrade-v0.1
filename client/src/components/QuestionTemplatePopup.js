@@ -43,7 +43,7 @@ function QuestionTemplatePopup({ isOpen, onClose, onSearch }) {
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
       <div className="bg-white p-6 rounded shadow-md w-96">
-        <h2 className="text-xl font-bold mb-4">Search Question Template</h2>
+        <h2 className="text-xl font-bold mb-4">Search Answer Template</h2>
         <div className="mb-4">
           <label className="block text-sm font-medium mb-2">Exam Name</label>
           <select

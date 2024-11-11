@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import StudentHistoryPopup from './components/StudentHistoryPopup';
 import QuestionTemplatePopup from './components/QuestionTemplatePopup';
+import AlertBox from './components/AlertBox';
 
 function App() {
   const [numQuestions, setNumQuestions] = useState(1);
@@ -14,6 +15,8 @@ function App() {
 
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [isQuestionPopupOpen, setIsQuestionPopupOpen] = useState(false);
+  const [alertOpen, setAlertOpen] = useState(false);
+  const [alertMsg, setAlertMsg] = useState('');
 
   const handleQuestionSearch = (questionData) => {
     setExamName(questionData.examName);
@@ -86,7 +89,9 @@ function App() {
         })),
         totalMark: totalMarks,
       });
-      console.log('Question saved successfully:', response.data);
+      console.log(response.data.message);
+      setAlertMsg(response.data.message);
+      setAlertOpen(true);
     } catch (error) {
       console.error('Error saving Question:', error);
     }
@@ -106,7 +111,7 @@ function App() {
         results: results.map((result) => ({
           result: result.result,
           mark: result.mark,
-        })),
+        })),  
         totalMark: totalMarks,
         earnedMark: earnedMarks,        
       });
@@ -123,8 +128,7 @@ function App() {
           <h1 className="text-2xl font-bold ml-4">EasyGrade</h1>
           <div>
             <a href="#student-history" onClick={() => setIsPopupOpen(true)} className="mr-4">Student History</a>
-            <a href="#question-templates" onClick={() => setIsQuestionPopupOpen(true)} className="mr-4">Question Templates</a>
-            <a href="#about" className="mr-4">About</a>
+            <a href="#question-templates" onClick={() => setIsQuestionPopupOpen(true)} className="mr-4">Answer Templates</a>
           </div>
         </div>
       </nav>
@@ -139,6 +143,12 @@ function App() {
         isOpen={isQuestionPopupOpen}
         onClose={() => setIsQuestionPopupOpen(false)}
         onSearch={handleQuestionSearch}
+      />
+
+      <AlertBox
+        isOpen={alertOpen}
+        message={alertMsg}
+        onClose={() => setAlertOpen(false)}
       />
 
       <div className="mt-16 px-16">
@@ -272,7 +282,7 @@ function App() {
             onClick={handleSaveQuestion}
             className="bg-violet-700 text-white p-2 rounded"
           >
-            Save Question
+            Save Template
           </button>
         </div>
         
